@@ -1,0 +1,30 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: IDN-AD-002
+  name: Member Added to Privileged Group
+  description: 'Synthetic example rule for the coverage report demo: member added to privileged group.'
+  author: analyst2
+  date: '2026-05-06'
+  version: 1.0.0
+  status: active
+  severity: medium
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Persistence
+    tactic_id: TA0003
+    technique: Account Manipulation
+    technique_id: T1098
+  - tactic: Privilege Escalation
+    tactic_id: TA0004
+    technique: 'Valid Accounts: Domain Accounts'
+    technique_id: T1078.002
+splunk:
+  search: index=wineventlog EventCode IN (4728,4732,4756) Group_Name IN ("Domain Admins","Enterprise Admins")
+    | table _time, Subject_Account_Name, Member_Name, Group_Name
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

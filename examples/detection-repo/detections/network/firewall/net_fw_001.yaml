@@ -1,0 +1,27 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: NET-FW-001
+  name: Outbound Connection to Rare Destination Port
+  description: 'Synthetic example rule for the coverage report demo: outbound connection to rare destination
+    port.'
+  author: analyst2
+  date: '2026-06-20'
+  version: 1.0.0
+  status: active
+  severity: low
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Command and Control
+    tactic_id: TA0011
+    technique: Non-Standard Port
+    technique_id: T1571
+splunk:
+  search: index=netflow action=allowed direction=outbound NOT dest_port IN (80,443,53,123) | rare dest_port
+    by src
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

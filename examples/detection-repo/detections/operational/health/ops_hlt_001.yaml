@@ -1,0 +1,20 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: OPS-HLT-001
+  name: Log Source Stopped Sending Events
+  description: 'Synthetic example rule for the coverage report demo: log source stopped sending events.'
+  author: analyst2
+  date: '2026-10-30'
+  version: 1.0.0
+  status: active
+  severity: medium
+  supported_siems:
+  - splunk
+splunk:
+  search: '| tstats latest(_time) AS last WHERE index=* BY index, sourcetype | where now() - last > 3600'
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

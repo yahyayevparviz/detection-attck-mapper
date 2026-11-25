@@ -1,0 +1,25 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: OS-WIN-001
+  name: Windows Security Event Log Cleared
+  description: 'Synthetic example rule for the coverage report demo: windows security event log cleared.'
+  author: analyst2
+  date: '2026-03-15'
+  version: 1.0.0
+  status: active
+  severity: high
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Defense Evasion
+    tactic_id: TA0005
+    technique: 'Indicator Removal: Clear Windows Event Logs'
+    technique_id: T1070.001
+splunk:
+  search: index=wineventlog EventCode=1102 | table _time, host, Subject_Account_Name
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

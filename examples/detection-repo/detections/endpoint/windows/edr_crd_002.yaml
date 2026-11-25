@@ -1,0 +1,26 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: EDR-CRD-002
+  name: LSASS Memory Access by Unusual Process
+  description: 'Synthetic example rule for the coverage report demo: lsass memory access by unusual process.'
+  author: analyst2
+  date: '2026-04-11'
+  version: 1.0.0
+  status: active
+  severity: high
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Credential Access
+    tactic_id: TA0006
+    technique: 'OS Credential Dumping: LSASS Memory'
+    technique_id: T1003.001
+splunk:
+  search: index=edr TargetImage="*\\lsass.exe" GrantedAccess IN ("0x1010","0x1410") NOT SourceImage IN
+    ("*\\MsMpEng.exe") | stats count by host, SourceImage
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

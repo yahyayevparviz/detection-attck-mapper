@@ -1,0 +1,27 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: IDN-AD-001
+  name: Kerberoasting via RC4 Service Ticket Requests
+  description: 'Synthetic example rule for the coverage report demo: kerberoasting via rc4 service ticket
+    requests.'
+  author: analyst1
+  date: '2026-02-18'
+  version: 1.0.0
+  status: active
+  severity: high
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Credential Access
+    tactic_id: TA0006
+    technique: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+    technique_id: T1558.003
+splunk:
+  search: index=wineventlog EventCode=4769 Ticket_Encryption_Type=0x17 | stats dc(Service_Name) AS spns
+    by Account_Name | where spns > 8
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

@@ -1,0 +1,27 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: WEB-WAF-001
+  name: Credential Stuffing Against Login Endpoint
+  description: 'Synthetic example rule for the coverage report demo: credential stuffing against login
+    endpoint.'
+  author: analyst2
+  date: '2026-08-12'
+  version: 1.0.0
+  status: active
+  severity: medium
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Credential Access
+    tactic_id: TA0006
+    technique: 'Brute Force: Credential Stuffing'
+    technique_id: T1110.004
+splunk:
+  search: index=waf uri_path="/login" status=401 | stats dc(user) AS users, count by src | where users
+    > 20
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

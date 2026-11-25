@@ -1,0 +1,29 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: OS-LNX-001
+  name: Cron Job Created by Non-Root User
+  description: 'Synthetic example rule for the coverage report demo: cron job created by non-root user.'
+  author: analyst1
+  date: '2026-07-09'
+  version: 1.0.0
+  status: active
+  severity: low
+  supported_siems:
+  - splunk
+  deployment:
+    stage: test
+    test_since: '2026-11-10'
+    test_period_days: 14
+  mitre:
+  - tactic: Persistence
+    tactic_id: TA0003
+    technique: 'Scheduled Task/Job: Cron'
+    technique_id: T1053.003
+splunk:
+  search: index=linux sourcetype=auditd key=cron_mod NOT uid=0 | stats count by host, user, exe
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

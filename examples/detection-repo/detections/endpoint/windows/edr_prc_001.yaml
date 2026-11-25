@@ -1,0 +1,33 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: EDR-PRC-001
+  name: Encoded PowerShell Command Execution
+  description: 'Synthetic example rule for the coverage report demo: encoded powershell command execution.'
+  author: analyst1
+  date: '2026-03-02'
+  version: 1.0.0
+  status: active
+  severity: medium
+  supported_siems:
+  - splunk
+  - crowdstrike
+  mitre:
+  - tactic: Execution
+    tactic_id: TA0002
+    technique: 'Command and Scripting Interpreter: PowerShell'
+    technique_id: T1059.001
+  - tactic: Defense Evasion
+    tactic_id: TA0005
+    technique: Obfuscated Files or Information
+    technique_id: T1027
+splunk:
+  search: index=edr process_name=powershell.exe (process="*-enc *" OR process="*-EncodedCommand*") | stats
+    count by host, user, process
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+crowdstrike:
+  search: event_simpleName=ProcessRollup2 FileName=powershell.exe CommandLine=/-e(nc|ncodedcommand)?\s+[A-Za-z0-9+\/=]{100,}/i
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

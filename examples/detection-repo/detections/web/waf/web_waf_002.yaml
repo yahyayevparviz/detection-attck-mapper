@@ -1,0 +1,30 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: WEB-WAF-002
+  name: Web Shell Upload Attempt
+  description: 'Synthetic example rule for the coverage report demo: web shell upload attempt.'
+  author: analyst1
+  date: '2026-09-03'
+  version: 1.0.0
+  status: active
+  severity: high
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Persistence
+    tactic_id: TA0003
+    technique: 'Server Software Component: Web Shell'
+    technique_id: T1505.003
+  - tactic: Initial Access
+    tactic_id: TA0001
+    technique: Exploit Public-Facing Application
+    technique_id: T1190
+splunk:
+  search: index=waf http_method=POST (uri_path="*.php" OR uri_path="*.jsp" OR uri_path="*.aspx") form_data="*cmd=*"
+    | stats count by src, uri_path
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

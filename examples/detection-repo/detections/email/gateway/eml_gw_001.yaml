@@ -1,0 +1,27 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: EML-GW-001
+  name: Inbound Email with Macro-Enabled Attachment
+  description: 'Synthetic example rule for the coverage report demo: inbound email with macro-enabled
+    attachment.'
+  author: analyst1
+  date: '2026-01-28'
+  version: 1.0.0
+  status: active
+  severity: medium
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Initial Access
+    tactic_id: TA0001
+    technique: 'Phishing: Spearphishing Attachment'
+    technique_id: T1566.001
+splunk:
+  search: index=email direction=inbound attachment_name IN ("*.docm","*.xlsm","*.pptm") | stats count
+    by sender, recipient, attachment_name
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.

@@ -1,0 +1,20 @@
+# ---------------------------------------------------------------------------
+# detection-attck-mapper configuration
+#
+# Rule source: a YAML detection-rule repository with one YAML file per rule
+# under <detections_subdir>/<category>/ at any depth. Categories are
+# discovered from the folder names -- nothing is hardcoded.
+#
+# In CI the rule repo is cloned before the exporter runs (see .gitlab-ci.yml).
+# Locally, either point --repo-path at an existing checkout, or use --clone
+# (with the token in the environment variable named by token_env).
+# ---------------------------------------------------------------------------
+
+detection_repo:
+  repo_url: "https://gitlab.com/<group>/<detection-repo>.git"   # only used by --clone
+  branch: "main"
+  local_path: "detection-repo"        # checkout location, relative to the project root
+  detections_subdir: "detections"
+  output_root: "rules/detection_repo"
+  include_test_stage: true            # false => deployment.stage: test rules are skipped
+  token_env: "DETECTION_REPO_TOKEN"   # env var holding a read token, used by --clone

@@ -1,0 +1,31 @@
+# Synthetic example rule. No real environment data.
+metadata:
+  id: NET-DNS-001
+  name: Possible DNS Tunnelling via Long Subdomains
+  description: 'Synthetic example rule for the coverage report demo: possible dns tunnelling via long
+    subdomains.'
+  author: analyst1
+  date: '2026-06-01'
+  version: 1.0.0
+  status: active
+  severity: medium
+  supported_siems:
+  - splunk
+  mitre:
+  - tactic: Command and Control
+    tactic_id: TA0011
+    technique: 'Application Layer Protocol: DNS'
+    technique_id: T1071.004
+  - tactic: Exfiltration
+    tactic_id: TA0010
+    technique: Exfiltration Over Alternative Protocol
+    technique_id: T1048
+splunk:
+  search: index=dns | eval label_len=len(mvindex(split(query,"."),0)) | where label_len > 50 | stats count
+    by src, query
+  schedule:
+    cron: '*/15 * * * *'
+    earliest_time: -15m
+response:
+- Validate the activity with the asset owner.
+- Escalate to L2 if the activity is not expected.
